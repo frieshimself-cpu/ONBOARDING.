@@ -1,0 +1,20 @@
+{
+  "name": "onboarding-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "$ONBOARDING memecoin platform — dev/onboardee directory, guides, and an auditable Solana buyback-and-burn fee flow.",
+  "workspaces": ["app"],
+  "scripts": {
+    "dev": "npm run dev --workspace app",
+    "build": "npm run build --workspace app",
+    "preview": "npm run preview --workspace app",
+    "typecheck": "npm run typecheck --workspace app",
+    "anchor:build": "cd programs/onboarding_fee && anchor build",
+    "anchor:test": "cd programs/onboarding_fee && anchor test"
+  },
+  "engines": { "node": ">=18.18" },
+  "overrides": {
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7"
+  }
+}
