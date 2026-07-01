@@ -187,12 +187,37 @@ Body in Markdown…
 Included placeholders: *Setting up a Phantom Wallet*, *Launching on Pump.fun*,
 *Routing creator rewards*.
 
-## Deploy the front end
+## Deploy to Vercel
 
-It's a static SPA — deploy `app/dist` anywhere (Vercel, Netlify, Cloudflare
-Pages). Set the build command to `npm run build`, output dir `app/dist`, and add
-your `VITE_*` env vars in the host's dashboard. Add an SPA rewrite (all routes →
-`/index.html`) so client-side routing works.
+A root [`vercel.json`](vercel.json) already wires everything up (build command,
+output dir `app/dist`, and the SPA rewrite so client-side routes work), so you
+do **not** need to change Vercel's "Root Directory" — leave it at the repo root.
+
+1. Push this repo to GitHub (done) and **Import Project** in Vercel, or use the CLI:
+   ```bash
+   npm i -g vercel
+   vercel          # preview deploy
+   vercel --prod   # production deploy
+   ```
+2. In **Vercel → Project → Settings → Environment Variables**, add the `VITE_*`
+   vars from `.env.example` (Vite reads `VITE_`-prefixed vars straight from the
+   build environment — no `.env` file needed on Vercel). At minimum set
+   `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SOLANA_NETWORK`,
+   `VITE_SOLANA_RPC_URL`; add the token/fee/program vars as you get them.
+   Without any of these the site still deploys and runs in **demo mode**.
+3. Redeploy after changing env vars.
+
+Vercel picks these up from `vercel.json`:
+
+| Setting | Value |
+|---|---|
+| Install command | `npm install` |
+| Build command | `npm run build` |
+| Output directory | `app/dist` |
+| Rewrites | `/(.*)` → `/index.html` (SPA) |
+
+> The same static build in `app/dist` also works on Netlify or Cloudflare Pages —
+> replicate the build command, output dir, and SPA rewrite there.
 
 ## License
 
