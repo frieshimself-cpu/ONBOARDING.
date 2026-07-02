@@ -18,8 +18,8 @@ export function Field({
   children: ReactNode
 }) {
   return (
-    <label className="block space-y-1.5">
-      <span className="text-sm font-medium text-text">
+    <label className="block space-y-2">
+      <span className="mono-label block text-text/80">
         {label} {required && <span className="text-brand">*</span>}
       </span>
       {children}
@@ -29,7 +29,7 @@ export function Field({
 }
 
 const inputStyles =
-  'w-full rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-sm text-text placeholder:text-muted/70 focus:outline-none focus:border-brand/60 focus:ring-2 focus:ring-brand/20 transition-colors'
+  'w-full rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-sm text-text placeholder:text-muted/60 focus:outline-none focus:border-brand/70 focus:ring-2 focus:ring-brand/15 transition-colors'
 
 export const Input = forwardRef<
   HTMLInputElement,

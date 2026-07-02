@@ -4,10 +4,17 @@
 > **onboardees**, hands-on **guides**, and a transparent, on-chain
 > **2% buyback-and-burn** on every on-platform tip.
 
-Best-in-class modern landing site (dark-mode-first, animated hero, smooth scroll,
-mobile-first) built with **React + Vite + Tailwind + Framer Motion**, a
-**Supabase** backend (auth + Postgres + storage), **Solana wallet-adapter**
-(Phantom, Solflare), and an **Anchor** program for the fee → buyback → burn flow.
+A dark-mode-first, mobile-first site built with **React + Vite + Tailwind +
+Framer Motion**, a **Supabase** backend (auth + Postgres + storage), **Solana
+wallet-adapter** (Phantom, Solflare), and an **Anchor** program for the
+fee → buyback → burn flow.
+
+**Design language:** "boarding pass onchain" — Unbounded / Space Grotesk /
+JetBrains Mono (self-hosted via Fontsource, never falls back), a volt-green +
+burn-orange palette, terminal-style hero, ticker marquee, boarding-pass cards
+with perforations and barcodes, film-grain overlay, and cursor-tracking
+spotlight cards. Fully responsive, honest copy, `prefers-reduced-motion`
+respected.
 
 ---
 
@@ -49,7 +56,7 @@ I couldn't ask interactively in this session, so I picked sensible defaults:
 │   ├── src/
 │   │   ├── components/         # layout (Navbar/Footer/Theme) + UI primitives
 │   │   ├── features/
-│   │   │   ├── profiles/       # create/edit form, cards, profile page, data API
+│   │   │   ├── profiles/       # create/EDIT/delete flows, cards, profile page, data API
 │   │   │   ├── directory/      # browsable/filterable/searchable directory
 │   │   │   ├── guides/         # Markdown loader + sidebar + renderer
 │   │   │   └── transactions/   # wallet button, tip modal, fee/burn builders
@@ -77,10 +84,12 @@ cp .env.example .env      # optional in demo mode; leave REPLACE_ values as-is
 npm run dev               # http://localhost:5173
 ```
 
-What works in demo mode: landing + two-path chooser, directory (search/filter),
-profile creation (saved to localStorage), profile pages, guides, wallet connect,
-and the SOL tip flow (needs `VITE_FEE_WALLET` + a wallet with devnet SOL to
-actually send).
+What works in demo mode (all verified with scripted browser tests): landing +
+two-path chooser, directory (search/filter), profile create/edit/delete (saved
+to localStorage, edit gated to profiles created in your browser), profile
+pages, guides with prev/next + reading progress, 404, light/dark theme, wallet
+connect, and the SOL tip flow with fee preview (sending needs
+`VITE_FEE_WALLET` + a wallet with devnet SOL).
 
 Scripts:
 

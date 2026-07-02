@@ -12,16 +12,10 @@ export function Tag({
   className?: string
 }) {
   const base =
-    'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors'
+    'inline-flex items-center rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-wider transition-all'
   if (!onClick) {
     return (
-      <span
-        className={cn(
-          base,
-          'border border-border bg-surface-2 text-muted',
-          className,
-        )}
-      >
+      <span className={cn(base, 'border border-border bg-surface-2 text-muted', className)}>
         {children}
       </span>
     )
@@ -33,8 +27,8 @@ export function Tag({
       className={cn(
         base,
         active
-          ? 'bg-brand text-[#06120c] border border-brand'
-          : 'border border-border bg-surface-2 text-muted hover:text-text hover:border-brand/50',
+          ? 'border border-brand bg-brand font-bold text-ink'
+          : 'border border-border bg-surface-2 text-muted hover:border-brand/60 hover:text-text',
         className,
       )}
     >

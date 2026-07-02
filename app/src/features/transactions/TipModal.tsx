@@ -43,17 +43,25 @@ export function TipModal({
   const [signature, setSignature] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  // fresh state each time the modal opens (a second tip shouldn't show the old receipt)
+  useEffect(() => {
+    if (open) {
+      setStatus('idle')
+      setSignature(null)
+      setError(null)
+    }
+  }, [open])
+
   const mintConfigured = isConfigured(ONBOARDING_MINT)
   const feeWalletConfigured = isConfigured(FEE_WALLET)
   const recipient = profile.wallet_address
 
-  // Fetch $ONBOARDING decimals when needed.
   useEffect(() => {
     let alive = true
     if (token === 'ONBOARDING' && mintConfigured && decimals === null) {
       getMint(connection, new PublicKey(ONBOARDING_MINT))
         .then((m) => alive && setDecimals(m.decimals))
-        .catch(() => alive && setError('Could not read $ONBOARDING mint. Check VITE_ONBOARDING_MINT.'))
+        .catch(() => alive && setError('Could not read the $ONBOARDING mint. Check VITE_ONBOARDING_MINT.'))
     }
     return () => {
       alive = false
@@ -62,15 +70,15 @@ export function TipModal({
 
   const amt = Number(amount) || 0
   const baseUnits =
-    token === 'SOL'
-      ? solToLamports(amt)
-      : Math.round(amt * Math.pow(10, decimals ?? 0))
+    token === 'SOL' ? solToLamports(amt) : Math.round(amt * Math.pow(10, decimals ?? 0))
   const fee = useMemo(() => computeFee(baseUnits), [baseUnits])
+  const netPct = 100 - FEE_PERCENT
 
   function fmt(units: number): string {
-    if (token === 'SOL') return `${lamportsToSol(units).toLocaleString(undefined, { maximumFractionDigits: 6 })} SOL`
+    if (token === 'SOL')
+      return `${lamportsToSol(units).toLocaleString(undefined, { maximumFractionDigits: 6 })} SOL`
     const d = decimals ?? 0
-    return `${(units / Math.pow(10, d)).toLocaleString(undefined, { maximumFractionDigits: d })} $ONBOARDING`
+    return `${(units / Math.pow(10, d)).toLocaleString(undefined, { maximumFractionDigits: d })} $ONB`
   }
 
   const canSubmit =
@@ -123,58 +131,60 @@ export function TipModal({
   return createPortal(
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4 backdrop-blur-sm"
+        className="fixed inset-0 z-50 grid place-items-center bg-black/75 p-4 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
       >
         <motion.div
-          className="card w-full max-w-md p-6"
-          initial={{ opacity: 0, y: 16, scale: 0.98 }}
+          className="card w-full max-w-md overflow-hidden shadow-pass"
+          initial={{ opacity: 0, y: 20, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 16 }}
+          exit={{ opacity: 0, y: 20 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="mb-4 flex items-start justify-between">
+          <div className="flex items-start justify-between border-b border-border px-6 py-4">
             <div>
-              <div className="text-lg font-bold">Tip @{profile.handle}</div>
-              <div className="text-xs text-muted">
-                Non-custodial — you approve and sign every transaction.
-              </div>
+              <div className="mono-label text-brand">send a tip</div>
+              <div className="mt-1 font-display text-lg font-bold">@{profile.handle}</div>
             </div>
-            <button onClick={onClose} className="text-muted hover:text-text">
-              <X size={18} />
+            <button
+              onClick={onClose}
+              className="grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-text"
+              aria-label="Close"
+            >
+              <X size={16} />
             </button>
           </div>
 
           {status === 'confirmed' && signature ? (
-            <div className="space-y-4 text-center">
+            <div className="space-y-4 p-6 text-center">
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-brand/15 text-brand">
                 <ShieldCheck size={26} />
               </div>
-              <div className="font-semibold">Tip confirmed</div>
-              <p className="text-sm text-muted">
+              <div className="font-display text-lg font-bold">Tip confirmed</div>
+              <p className="text-sm leading-6 text-muted">
                 Sent {fmt(fee.netLamports)} to @{profile.handle}. The {FEE_PERCENT}% fee
                 {token === 'SOL'
                   ? ' is queued in the fee vault for buyback & burn.'
-                  : ' was burned on-chain immediately. 🔥'}
+                  : ' was burned onchain immediately. 🔥'}
               </p>
               <a
                 href={explorerTxUrl(signature, SOLANA_NETWORK)}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 text-sm text-brand hover:underline"
+                className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-brand hover:underline"
               >
-                View on Solana Explorer <ExternalLink size={14} />
+                view on explorer <ExternalLink size={13} />
               </a>
               <Button className="w-full" onClick={onClose}>
                 Done
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
-              {/* Token toggle */}
+            <div className="space-y-5 p-6">
+              {/* token toggle */}
               <div className="grid grid-cols-2 gap-2">
                 {(['SOL', 'ONBOARDING'] as TipToken[]).map((t) => {
                   const disabled = t === 'ONBOARDING' && !mintConfigured
@@ -183,19 +193,21 @@ export function TipModal({
                       key={t}
                       disabled={disabled}
                       onClick={() => setToken(t)}
-                      className={`rounded-xl border px-3 py-2 text-sm font-medium transition-colors disabled:opacity-40 ${
-                        token === t ? 'border-brand text-brand' : 'border-border text-muted hover:text-text'
+                      className={`rounded-xl border px-3 py-2.5 font-mono text-xs font-bold uppercase tracking-wider transition-colors disabled:opacity-40 ${
+                        token === t
+                          ? 'border-brand bg-brand/10 text-brand'
+                          : 'border-border text-muted hover:text-text'
                       }`}
                     >
-                      {t === 'SOL' ? 'SOL' : '$ONBOARDING'}
-                      {disabled && <span className="ml-1 text-[10px]">(set mint)</span>}
+                      {t === 'SOL' ? '◎ SOL' : '$ONB'}
+                      {disabled && <span className="ml-1 text-[9px] normal-case">(set mint)</span>}
                     </button>
                   )
                 })}
               </div>
 
               <div>
-                <div className="mb-1.5 text-sm font-medium">Amount</div>
+                <div className="mono-label mb-2">amount</div>
                 <Input
                   type="number"
                   min="0"
@@ -205,29 +217,34 @@ export function TipModal({
                 />
               </div>
 
-              {/* Auditable fee preview */}
-              <div className="rounded-xl border border-border bg-surface-2 p-3 text-sm">
-                <Row label="Tip amount" value={fmt(fee.grossLamports)} />
-                <Row
-                  label={`Platform fee (${FEE_PERCENT}%)`}
-                  value={fmt(fee.feeLamports)}
-                  accent
-                />
-                <div className="my-2 border-t border-border" />
-                <Row label={`Recipient receives`} value={fmt(fee.netLamports)} strong />
-                <div className="mt-3 flex items-start gap-2 rounded-lg bg-brand/10 p-2 text-xs text-brand">
-                  <Flame size={14} className="mt-0.5 shrink-0" />
+              {/* auditable preview */}
+              <div className="rounded-xl border border-border bg-surface-2 p-4">
+                <div className="flex h-7 w-full overflow-hidden rounded-md font-mono text-[9px] font-bold uppercase">
+                  <div className="flex items-center justify-center bg-brand text-ink" style={{ width: `${netPct}%` }}>
+                    {netPct}%
+                  </div>
+                  <div className="flex items-center justify-center bg-flare text-white" style={{ width: `${FEE_PERCENT}%` }}>
+                    <Flame size={10} />
+                  </div>
+                </div>
+                <div className="mt-3 space-y-1.5 text-sm">
+                  <Row label="tip" value={fmt(fee.grossLamports)} />
+                  <Row label={`recipient gets`} value={fmt(fee.netLamports)} strong />
+                  <Row label={`fee (${FEE_PERCENT}%)`} value={fmt(fee.feeLamports)} flare />
+                </div>
+                <div className="mt-3 flex items-start gap-2 rounded-lg bg-flare/10 p-2.5 text-xs leading-5 text-flare">
+                  <Flame size={13} className="mt-0.5 shrink-0" />
                   <span>
                     {token === 'SOL'
-                      ? 'The 2% fee goes to a program-controlled vault that market-buys $ONBOARDING and burns it.'
-                      : 'The 2% fee is burned directly on-chain — removed from supply forever.'}
+                      ? 'The fee goes to a program-controlled vault that market-buys $ONBOARDING and burns it.'
+                      : 'The fee is burned directly onchain — removed from supply forever.'}
                   </span>
                 </div>
               </div>
 
               {recipient ? (
-                <p className="text-xs text-muted">
-                  To: <span className="font-mono">{shortAddress(recipient, 6)}</span>
+                <p className="font-mono text-[11px] text-muted">
+                  to → <span className="text-text/80">{shortAddress(recipient, 6)}</span>
                 </p>
               ) : (
                 <p className="text-xs text-red-400">
@@ -241,12 +258,10 @@ export function TipModal({
                 </p>
               )}
 
-              {error && <p className="text-xs text-red-400">{error}</p>}
+              {error && <p className="text-xs leading-5 text-red-400">{error}</p>}
 
               {!connected ? (
-                <div className="pt-1">
-                  <ConnectWalletButton />
-                </div>
+                <ConnectWalletButton />
               ) : (
                 <Button className="w-full" size="lg" disabled={!canSubmit} onClick={confirm}>
                   {(status === 'building' || status === 'signing') && <Spinner />}
@@ -254,9 +269,13 @@ export function TipModal({
                     ? 'Confirm in wallet…'
                     : status === 'building'
                       ? 'Preparing…'
-                      : `Preview & sign`}
+                      : 'Preview & sign'}
                 </Button>
               )}
+
+              <p className="text-center font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                non-custodial — you sign, we never touch keys
+              </p>
             </div>
           )}
         </motion.div>
@@ -269,18 +288,20 @@ export function TipModal({
 function Row({
   label,
   value,
-  accent,
   strong,
+  flare,
 }: {
   label: string
   value: string
-  accent?: boolean
   strong?: boolean
+  flare?: boolean
 }) {
   return (
-    <div className="flex items-center justify-between py-0.5">
-      <span className={accent ? 'text-brand' : 'text-muted'}>{label}</span>
-      <span className={strong ? 'font-semibold' : accent ? 'text-brand' : ''}>{value}</span>
+    <div className="flex items-center justify-between">
+      <span className={`font-mono text-[11px] uppercase tracking-wider ${flare ? 'text-flare' : 'text-muted'}`}>
+        {label}
+      </span>
+      <span className={strong ? 'font-bold' : flare ? 'text-flare' : 'text-text/90'}>{value}</span>
     </div>
   )
 }

@@ -15,33 +15,45 @@ export default {
           DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
           2: 'rgb(var(--brand-2) / <alpha-value>)',
         },
+        flare: 'rgb(var(--flare) / <alpha-value>)',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['Unbounded', 'system-ui', 'sans-serif'],
+        sans: ['"Space Grotesk"', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 40px -8px rgb(var(--brand) / 0.45)',
-        card: '0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 8px 30px -12px rgb(0 0 0 / 0.6)',
+        volt: '0 0 0 1px rgb(var(--brand) / 0.25), 0 8px 40px -8px rgb(var(--brand) / 0.35)',
+        card: '0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 10px 32px -16px rgb(0 0 0 / 0.7)',
+        pass: '0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 24px 48px -24px rgb(0 0 0 / 0.8)',
       },
       keyframes: {
-        'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        blink: {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
+        },
+        'dash-flow': {
+          to: { strokeDashoffset: '-24' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-8px)' },
+          '50%': { transform: 'translateY(-10px)' },
         },
-        'gradient-pan': {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
+        'spin-slow': {
+          to: { transform: 'rotate(360deg)' },
         },
       },
       animation: {
-        'fade-up': 'fade-up 0.6s ease-out both',
-        float: 'float 6s ease-in-out infinite',
-        'gradient-pan': 'gradient-pan 8s ease infinite',
+        marquee: 'marquee 30s linear infinite',
+        blink: 'blink 1.1s step-end infinite',
+        'dash-flow': 'dash-flow 1.2s linear infinite',
+        float: 'float 7s ease-in-out infinite',
+        'spin-slow': 'spin-slow 24s linear infinite',
       },
     },
   },

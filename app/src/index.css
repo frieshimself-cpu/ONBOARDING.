@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,25 +5,29 @@
 @layer base {
   :root,
   .dark {
-    --bg: 10 10 15;
-    --surface: 18 18 26;
-    --surface-2: 24 24 34;
-    --border: 35 35 46;
-    --text: 231 231 234;
-    --muted: 148 148 161;
-    --brand: 34 229 132;
-    --brand-2: 124 92 255;
+    --bg: 9 9 11;          /* near-black */
+    --surface: 17 17 21;
+    --surface-2: 25 25 31;
+    --border: 40 40 48;
+    --text: 237 237 240;
+    --muted: 152 152 165;
+    --brand: 198 255 61;    /* volt */
+    --brand-2: 148 130 255; /* violet */
+    --flare: 255 106 43;    /* burn orange */
+    --ink: 11 15 3;         /* text on volt */
   }
 
   .light {
-    --bg: 250 250 252;
+    --bg: 246 246 242;
     --surface: 255 255 255;
-    --surface-2: 244 244 248;
-    --border: 226 226 233;
-    --text: 20 20 28;
-    --muted: 90 90 104;
-    --brand: 16 163 90;
-    --brand-2: 109 74 255;
+    --surface-2: 238 238 232;
+    --border: 219 219 210;
+    --text: 18 18 20;
+    --muted: 104 104 114;
+    --brand: 92 146 0;
+    --brand-2: 104 88 224;
+    --flare: 217 82 22;
+    --ink: 250 255 238;
   }
 
   html {
@@ -39,13 +41,14 @@
   body {
     @apply bg-bg text-text antialiased font-sans;
     min-height: 100vh;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: rgb(var(--brand) / 0.28);
+    background: rgb(var(--brand));
+    color: rgb(var(--ink));
   }
 
-  /* Slim, on-brand scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -63,58 +66,103 @@
 }
 
 @layer components {
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(
-      100deg,
-      rgb(var(--brand)),
-      rgb(var(--brand-2))
-    );
+  /* ---------- typography helpers ---------- */
+  .display {
+    @apply font-display font-bold tracking-tight;
+  }
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(var(--text) / 0.85);
+  }
+  .text-outline-volt {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(var(--brand));
+  }
+  .mono-label {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-muted;
   }
 
+  /* ---------- surfaces ---------- */
   .card {
-    @apply rounded-2xl border border-border bg-surface/70 backdrop-blur-sm shadow-card;
+    @apply rounded-2xl border border-border bg-surface shadow-card;
+  }
+  .glass {
+    @apply border border-border/80 bg-surface/70 backdrop-blur-xl;
   }
 
-  .hairline {
-    @apply border-border;
-  }
-
+  /* graph-paper backdrop, fading out downward */
   .grid-bg {
     background-image:
-      linear-gradient(rgb(var(--border) / 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--border) / 0.35) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+      linear-gradient(rgb(var(--border) / 0.45) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--border) / 0.45) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 90% 65% at 50% 0%, #000 30%, transparent 100%);
   }
 
-  /* ---- Guide markdown content ---- */
+  /* film-grain overlay (applied once in Layout) */
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- marquee ticker ---------- */
+  .ticker {
+    @apply overflow-hidden whitespace-nowrap border-y border-border bg-surface/50;
+  }
+  .ticker-track {
+    @apply inline-flex items-center gap-8 py-3 pr-8 font-mono text-xs uppercase tracking-[0.18em] text-muted;
+    animation: marquee 32s linear infinite;
+    will-change: transform;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  /* ---------- boarding pass ---------- */
+  .pass-notch-l,
+  .pass-notch-r {
+    @apply absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border border-border bg-bg;
+  }
+  .pass-notch-l { left: -13px; }
+  .pass-notch-r { right: -13px; }
+  .pass-perf {
+    border-top: 2px dashed rgb(var(--border));
+  }
+
+  /* ---------- guide markdown ---------- */
   .guide-content {
-    @apply text-[15px] leading-7 text-text/90;
+    @apply text-[15.5px] leading-7 text-text/90;
   }
   .guide-content > * + * {
     @apply mt-4;
   }
   .guide-content h1 {
-    @apply text-3xl font-extrabold tracking-tight mt-2 mb-2 scroll-mt-24;
+    @apply display text-3xl sm:text-4xl mt-2 mb-4 scroll-mt-28 leading-tight;
   }
   .guide-content h2 {
-    @apply text-2xl font-bold tracking-tight mt-10 mb-1 scroll-mt-24;
+    @apply display text-xl sm:text-2xl mt-12 mb-2 scroll-mt-28 leading-snug;
   }
   .guide-content h3 {
-    @apply text-xl font-semibold mt-8 mb-1 scroll-mt-24;
+    @apply text-lg font-bold mt-8 mb-1 scroll-mt-28;
+  }
+  .guide-content h1 a, .guide-content h2 a, .guide-content h3 a {
+    @apply no-underline text-inherit;
   }
   .guide-content a {
     @apply text-brand underline underline-offset-4 decoration-brand/40 hover:decoration-brand;
   }
   .guide-content ul {
-    @apply list-disc pl-6 space-y-1.5;
+    @apply list-disc pl-6 space-y-1.5 marker:text-brand;
   }
   .guide-content ol {
-    @apply list-decimal pl-6 space-y-1.5;
+    @apply list-decimal pl-6 space-y-1.5 marker:text-brand marker:font-mono;
   }
   .guide-content code {
-    @apply font-mono text-[13px] rounded bg-surface-2 px-1.5 py-0.5 text-brand;
+    @apply font-mono text-[13px] rounded-md bg-surface-2 px-1.5 py-0.5 text-brand;
   }
   .guide-content pre {
     @apply rounded-xl border border-border bg-surface-2 p-4 overflow-x-auto text-[13px] leading-6;
@@ -123,35 +171,59 @@
     @apply bg-transparent p-0 text-text/90;
   }
   .guide-content blockquote {
-    @apply border-l-2 border-brand/60 pl-4 italic text-muted;
+    @apply rounded-r-xl border-l-2 border-flare bg-flare/5 py-2 pl-4 pr-3 text-text/80 not-italic;
   }
   .guide-content table {
     @apply w-full text-left text-sm border-collapse;
   }
-  .guide-content th,
+  .guide-content th {
+    @apply border border-border bg-surface-2 px-3 py-2 font-mono text-xs uppercase tracking-wider;
+  }
   .guide-content td {
     @apply border border-border px-3 py-2;
   }
   .guide-content hr {
-    @apply border-border my-8;
+    @apply border-border my-10;
   }
   .guide-content img {
     @apply rounded-xl border border-border;
   }
 }
 
-/* ---- Theme the Solana wallet-adapter modal/buttons to match ---- */
+/* Respect prefers-reduced-motion: stop the perpetual decorations. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .ticker-track,
+  .animate-blink,
+  .animate-dash-flow,
+  .animate-float,
+  .animate-spin-slow {
+    animation: none !important;
+  }
+}
+
+/* ---------- Solana wallet-adapter theming ---------- */
 .wallet-adapter-button-trigger {
-  background: linear-gradient(100deg, rgb(var(--brand)), rgb(var(--brand-2))) !important;
-  color: #06120c !important;
+  background: rgb(var(--brand)) !important;
+  color: rgb(var(--ink)) !important;
+  font-family: 'Space Grotesk', system-ui, sans-serif !important;
   font-weight: 700 !important;
-  border-radius: 0.75rem !important;
+  font-size: 13px !important;
+  border-radius: 999px !important;
   height: 2.5rem !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.wallet-adapter-button-trigger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px -8px rgb(var(--brand) / 0.5);
 }
 .wallet-adapter-modal-wrapper {
   background: rgb(var(--surface)) !important;
   border: 1px solid rgb(var(--border)) !important;
-  border-radius: 1rem !important;
+  border-radius: 1.25rem !important;
+  font-family: 'Space Grotesk', system-ui, sans-serif !important;
 }
 .wallet-adapter-modal-title {
   color: rgb(var(--text)) !important;
@@ -159,4 +231,5 @@
 .wallet-adapter-modal-list .wallet-adapter-button {
   background: rgb(var(--surface-2)) !important;
   color: rgb(var(--text)) !important;
+  border-radius: 0.9rem !important;
 }

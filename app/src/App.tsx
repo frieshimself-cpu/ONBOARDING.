@@ -4,6 +4,7 @@ import { LandingPage } from '@/pages/LandingPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { DirectoryPage } from '@/features/directory/pages/DirectoryPage'
 import { CreateProfilePage } from '@/features/profiles/pages/CreateProfilePage'
+import { EditProfilePage } from '@/features/profiles/pages/EditProfilePage'
 import { ProfilePage } from '@/features/profiles/pages/ProfilePage'
 import { GuidesPage } from '@/features/guides/GuidesPage'
 
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/create" element={<CreateProfilePage />} />
         <Route path="/create/:type" element={<CreateProfilePage />} />
         <Route path="/p/:handle" element={<ProfilePage />} />
+        <Route path="/p/:handle/edit" element={<EditProfilePage />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/guides/:slug" element={<GuidesPage />} />
         <Route path="*" element={<NotFoundPage />} />

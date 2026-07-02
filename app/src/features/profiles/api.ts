@@ -5,7 +5,7 @@ import { DEMO_PROFILES } from './demoData'
 
 const LS_KEY = 'onb-demo-profiles'
 
-// ---- demo-mode persistence (localStorage) so the create flow works w/o backend ----
+// ---- demo-mode persistence (localStorage) so the full CRUD flow works w/o backend ----
 function readLocal(): Profile[] {
   try {
     const raw = localStorage.getItem(LS_KEY)
@@ -82,6 +82,9 @@ export async function createProfile(input: ProfileInput): Promise<Profile> {
   }
 
   // demo mode — persist to localStorage
+  if (demoPool().some((p) => p.handle === input.handle)) {
+    throw new Error(`Handle @${input.handle} is already taken.`)
+  }
   const now = new Date().toISOString()
   const profile: Profile = {
     ...input,
@@ -92,6 +95,51 @@ export async function createProfile(input: ProfileInput): Promise<Profile> {
   }
   writeLocal([profile, ...readLocal()])
   return profile
+}
+
+export async function updateProfile(id: string, input: ProfileInput): Promise<Profile> {
+  if (isSupabaseConfigured && supabase) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ ...input })
+      .eq('id', id)
+      .select('*')
+      .single()
+    if (error) throw error
+    return data as Profile
+  }
+
+  const list = readLocal()
+  const idx = list.findIndex((p) => p.id === id)
+  if (idx === -1) throw new Error('Only profiles created in this browser can be edited in demo mode.')
+  const updated: Profile = {
+    ...list[idx],
+    ...input,
+    id,
+    updated_at: new Date().toISOString(),
+  }
+  list[idx] = updated
+  writeLocal(list)
+  return updated
+}
+
+export async function deleteProfile(id: string): Promise<void> {
+  if (isSupabaseConfigured && supabase) {
+    const { error } = await supabase.from('profiles').delete().eq('id', id)
+    if (error) throw error
+    return
+  }
+  writeLocal(readLocal().filter((p) => p.id !== id))
+}
+
+/**
+ * Can the current visitor edit this profile?
+ * - Supabase mode: profile.user_id must match the signed-in user.
+ * - Demo mode: only profiles created in this browser (stored locally).
+ */
+export function canEditProfile(profile: Profile, userId?: string | null): boolean {
+  if (isSupabaseConfigured) return !!userId && profile.user_id === userId
+  return readLocal().some((p) => p.id === profile.id)
 }
 
 /**
