@@ -19,14 +19,16 @@ export default {
         ink: 'rgb(var(--ink) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Unbounded', 'system-ui', 'sans-serif'],
-        sans: ['"Space Grotesk"', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['"Sora Variable"', 'Sora', 'system-ui', 'sans-serif'],
+        sans: ['"Inter Variable"', 'Inter', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       boxShadow: {
-        volt: '0 0 0 1px rgb(var(--brand) / 0.25), 0 8px 40px -8px rgb(var(--brand) / 0.35)',
-        card: '0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 10px 32px -16px rgb(0 0 0 / 0.7)',
-        pass: '0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 24px 48px -24px rgb(0 0 0 / 0.8)',
+        soft: '0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(15 23 42 / 0.10)',
+        lift: '0 2px 4px rgb(15 23 42 / 0.04), 0 16px 40px -16px rgb(15 23 42 / 0.16)',
+        card: '0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(15 23 42 / 0.10)',
+        pass: '0 2px 4px rgb(15 23 42 / 0.05), 0 24px 48px -20px rgb(15 23 42 / 0.18)',
+        volt: '0 8px 30px -8px rgb(var(--brand) / 0.45)',
       },
       keyframes: {
         marquee: {
@@ -44,16 +46,12 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        'spin-slow': {
-          to: { transform: 'rotate(360deg)' },
-        },
       },
       animation: {
-        marquee: 'marquee 30s linear infinite',
+        marquee: 'marquee 32s linear infinite',
         blink: 'blink 1.1s step-end infinite',
         'dash-flow': 'dash-flow 1.2s linear infinite',
         float: 'float 7s ease-in-out infinite',
-        'spin-slow': 'spin-slow 24s linear infinite',
       },
     },
   },

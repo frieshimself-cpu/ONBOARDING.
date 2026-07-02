@@ -57,13 +57,13 @@ export function DirectoryPage({ userType }: { userType: UserType }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div className="mono-label mb-3">
-          directory / <span className={isDev ? 'text-brand' : 'text-brand-2'}>{meta.label}s</span>
+        <div className="eyebrow mb-4">
+          Directory
+          <span className={isDev ? 'text-brand' : 'text-brand-2'}>{meta.label}s</span>
         </div>
         <div className="flex flex-wrap items-end justify-between gap-5">
-          <h1 className="font-display text-[clamp(2.2rem,6vw,3.8rem)] font-black leading-none tracking-tight">
-            {meta.label.toUpperCase()}
-            <span className={isDev ? 'text-brand' : 'text-brand-2'}>S</span>
+          <h1 className="font-display text-[clamp(2rem,5vw,3.2rem)] font-extrabold leading-none tracking-tight">
+            {meta.label}s<span className={isDev ? 'text-brand' : 'text-brand-2'}>.</span>
           </h1>
           <Link to={`/create/${userType}`}>
             <Button variant="outline">
@@ -115,22 +115,20 @@ export function DirectoryPage({ userType }: { userType: UserType }) {
           </div>
         ) : filtered.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-border py-24 text-center">
-            <div className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
-              no matches
-            </div>
+            <div className="text-sm font-semibold text-muted">No matches</div>
             <p className="mt-3 text-muted">
               No {meta.label.toLowerCase()}s match your filters yet.
             </p>
             <Link
               to={`/create/${userType}`}
-              className="mt-4 inline-block font-mono text-xs uppercase tracking-wider text-brand hover:underline"
+              className="mt-4 inline-block text-sm font-semibold text-brand hover:underline"
             >
-              be the first →
+              Be the first →
             </Link>
           </div>
         ) : (
           <>
-            <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+            <div className="mb-5 text-sm font-medium text-muted">
               {filtered.length} aboard
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

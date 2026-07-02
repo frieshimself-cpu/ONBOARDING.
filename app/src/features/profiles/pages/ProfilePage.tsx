@@ -87,12 +87,12 @@ export function ProfilePage() {
       <div className="card relative overflow-hidden shadow-pass">
         {/* seeded banner */}
         <div
-          className="h-28 w-full opacity-80 sm:h-36"
+          className="h-28 w-full opacity-70 saturate-[0.85] sm:h-36"
           style={{ background: gradientFromSeed(profile.handle) }}
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-28 grid-bg opacity-60 sm:h-36"
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/10 to-surface/60 sm:h-36"
         />
 
         <div className="relative px-6 pb-7 sm:px-8">
@@ -184,7 +184,7 @@ export function ProfilePage() {
               'no wallet linked'
             )}
           </div>
-          <Barcode seed={profile.handle} className="h-6 w-28 text-text/50" />
+          <Barcode seed={profile.handle} className="h-6 w-28 text-muted/35" />
         </div>
       </div>
 

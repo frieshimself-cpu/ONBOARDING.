@@ -12,8 +12,8 @@ import type { ProfileInput } from '@/lib/types'
 
 function TypeChooser() {
   const meta = [
-    { type: 'developer' as UserType, icon: Code2, accent: 'brand' as const, gate: 'D3V' },
-    { type: 'onboardee' as UserType, icon: Sprout, accent: 'brand-2' as const, gate: 'N00B' },
+    { type: 'developer' as UserType, icon: Code2, accent: 'brand' as const, gate: '02' },
+    { type: 'onboardee' as UserType, icon: Sprout, accent: 'brand-2' as const, gate: '01' },
   ]
   return (
     <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
@@ -45,7 +45,7 @@ function TypeChooser() {
                 </div>
                 <p className="mt-2 text-sm leading-6 text-muted">{USER_TYPE_META[type].blurb}</p>
                 <div className="mt-6 flex items-center justify-between">
-                  <Barcode seed={type} className="h-5 w-20 text-text/40" />
+                  <Barcode seed={type} className="h-5 w-20 text-muted/35" />
                   <ArrowRight
                     size={16}
                     className="text-muted transition-all group-hover:translate-x-1 group-hover:text-brand"

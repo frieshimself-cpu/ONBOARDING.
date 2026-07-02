@@ -9,12 +9,13 @@ Framer Motion**, a **Supabase** backend (auth + Postgres + storage), **Solana
 wallet-adapter** (Phantom, Solflare), and an **Anchor** program for the
 fee → buyback → burn flow.
 
-**Design language:** "boarding pass onchain" — Unbounded / Space Grotesk /
-JetBrains Mono (self-hosted via Fontsource, never falls back), a volt-green +
-burn-orange palette, terminal-style hero, ticker marquee, boarding-pass cards
-with perforations and barcodes, film-grain overlay, and cursor-tracking
-spotlight cards. Fully responsive, honest copy, `prefers-reduced-motion`
-respected.
+**Design language:** clean, friendly, light-first — white background, Sora /
+Inter / JetBrains Mono (self-hosted via Fontsource, never falls back), the
+Solana purple→green gradient as the hero accent, soft pastel blobs and
+shadows, a live-activity hero card, boarding-pass path cards with
+perforations and barcodes, a ticker marquee, and an interactive 98/2
+fee-split calculator. Dark mode included as a toggle. Fully responsive,
+honest copy, `prefers-reduced-motion` respected.
 
 ---
 

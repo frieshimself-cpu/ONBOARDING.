@@ -20,7 +20,6 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="noise" aria-hidden />
       <Navbar />
       <main className="flex-1 pt-[68px]">
         <ErrorBoundary>

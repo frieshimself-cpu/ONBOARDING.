@@ -39,16 +39,22 @@ export function Navbar() {
           onClick={() => setOpen(false)}
         >
           <svg viewBox="0 0 64 64" className="h-7 w-7" aria-hidden>
+            <defs>
+              <linearGradient id="logo-g" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stopColor="#9945FF" />
+                <stop offset="1" stopColor="#14F195" />
+              </linearGradient>
+            </defs>
             <rect width="64" height="64" rx="14" className="fill-surface-2" />
             <path
               d="M14 44 L34 24 L34 33 L50 17"
               fill="none"
-              stroke="rgb(var(--brand))"
-              strokeWidth="5"
+              stroke="url(#logo-g)"
+              strokeWidth="6"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <circle cx="50" cy="17" r="5" fill="rgb(var(--brand))" />
+            <circle cx="50" cy="17" r="5" fill="#14F195" />
           </svg>
           <span className="font-display text-sm font-bold tracking-tight">
             $ONBOARDING
@@ -62,7 +68,7 @@ export function Navbar() {
               to={l.to}
               className={({ isActive }) =>
                 cn(
-                  'rounded-full px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] transition-colors',
+                  'rounded-full px-4 py-2 text-sm font-semibold transition-colors',
                   isActive
                     ? 'bg-brand/10 text-brand'
                     : 'text-muted hover:text-text',
@@ -74,9 +80,9 @@ export function Navbar() {
           ))}
           <Link
             to="/#burn"
-            className="ml-1 inline-flex items-center gap-1.5 rounded-full border border-flare/30 bg-flare/10 px-3.5 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-flare transition-colors hover:bg-flare/20"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-2 text-sm font-semibold text-flare transition-colors hover:bg-orange-100 dark:border-orange-400/20 dark:bg-orange-500/10 dark:hover:bg-orange-500/20"
           >
-            <Flame size={12} /> 2% burn
+            <Flame size={13} /> 2% burn
           </Link>
         </nav>
 
@@ -111,7 +117,7 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   cn(
-                    'rounded-xl px-4 py-3 font-mono text-xs uppercase tracking-[0.14em]',
+                    'rounded-xl px-4 py-3 text-sm font-semibold',
                     isActive ? 'bg-brand/10 text-brand' : 'text-muted hover:bg-surface-2 hover:text-text',
                   )
                 }
@@ -122,9 +128,9 @@ export function Navbar() {
             <Link
               to="/#burn"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-1.5 rounded-xl px-4 py-3 font-mono text-xs uppercase tracking-[0.14em] text-flare hover:bg-surface-2"
+              className="inline-flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-semibold text-flare hover:bg-surface-2"
             >
-              <Flame size={12} /> 2% burn
+              <Flame size={13} /> 2% burn
             </Link>
             <div className="mt-1 px-2 pb-1 sm:hidden">
               <ConnectWalletButton />

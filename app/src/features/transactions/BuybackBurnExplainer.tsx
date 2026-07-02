@@ -4,68 +4,61 @@ import { FEE_PERCENT } from '@/lib/constants'
 const steps = [
   {
     icon: Coins,
-    title: 'You tip',
-    body: 'Send SOL or $ONBOARDING to a builder or onboardee. You sign it yourself — we never hold your keys.',
+    color: 'bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300',
+    title: 'You send a tip',
+    body: 'Say thanks with SOL or $ONBOARDING. You approve it in your own wallet — we never touch your keys.',
   },
   {
     icon: Landmark,
-    title: `${100 - FEE_PERCENT}% / ${FEE_PERCENT}% split`,
-    body: 'The recipient gets the tip minus a 2% platform fee, routed to a program-controlled fee vault.',
+    color: 'bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300',
+    title: `They get ${100 - FEE_PERCENT}%`,
+    body: `The person you tip receives ${100 - FEE_PERCENT}%. The small ${FEE_PERCENT}% fee goes to a program-controlled vault.`,
   },
   {
     icon: Repeat,
-    title: 'Auto buyback',
-    body: 'A permissionless onchain crank market-buys $ONBOARDING with the collected SOL via a Jupiter swap.',
+    color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
+    title: 'The fee buys $ONB',
+    body: 'An open, onchain process market-buys $ONBOARDING with the collected fees via a Jupiter swap.',
   },
   {
     icon: Flame,
-    title: 'Burned forever',
-    body: 'The bought $ONBOARDING goes to the incinerator — permanently removed from supply. All onchain.',
+    color: 'bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-300',
+    title: 'And burns it forever',
+    body: 'The bought tokens go to the incinerator — gone from supply, permanently and publicly.',
   },
 ]
 
 export function BuybackBurnExplainer() {
   return (
     <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {/* animated connector (desktop) */}
       <svg
         aria-hidden
-        className="pointer-events-none absolute left-0 right-0 top-10 hidden h-px w-full lg:block"
+        className="pointer-events-none absolute left-[12%] right-[12%] top-12 hidden h-px lg:block"
+        style={{ width: '76%' }}
         preserveAspectRatio="none"
       >
         <line
-          x1="0"
-          y1="0"
-          x2="100%"
-          y2="0"
+          x1="0" y1="0" x2="100%" y2="0"
           stroke="rgb(var(--border))"
           strokeWidth="2"
           strokeDasharray="6 6"
           className="animate-dash-flow"
         />
       </svg>
-      {steps.map((s, i) => {
-        const last = i === steps.length - 1
-        return (
-          <div
-            key={i}
-            className={`card relative p-5 ${last ? 'border-flare/40' : ''}`}
-          >
-            <div
-              className={`relative mb-4 grid h-11 w-11 place-items-center rounded-xl ${
-                last ? 'bg-flare/15 text-flare' : 'bg-brand/10 text-brand'
-              }`}
-            >
-              <s.icon size={20} />
+      {steps.map((s, i) => (
+        <div key={i} className="card relative p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className={`relative grid h-12 w-12 place-items-center rounded-2xl ${s.color}`}>
+              <s.icon size={21} />
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
-              step 0{i + 1}
-            </div>
-            <div className="mt-1.5 font-display text-sm font-bold">{s.title}</div>
-            <p className="mt-2 text-sm leading-6 text-muted">{s.body}</p>
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-surface-2 text-[11px] font-bold text-muted">
+              {i + 1}
+            </span>
           </div>
-        )
-      })}
+          <div className="font-display text-[15px] font-bold">{s.title}</div>
+          <p className="mt-2 text-sm leading-6 text-muted">{s.body}</p>
+        </div>
+      ))}
     </div>
   )
 }

@@ -220,7 +220,7 @@ export function TipModal({
               {/* auditable preview */}
               <div className="rounded-xl border border-border bg-surface-2 p-4">
                 <div className="flex h-7 w-full overflow-hidden rounded-md font-mono text-[9px] font-bold uppercase">
-                  <div className="flex items-center justify-center bg-brand text-ink" style={{ width: `${netPct}%` }}>
+                  <div className="flex items-center justify-center bg-emerald-500 text-white" style={{ width: `${netPct}%` }}>
                     {netPct}%
                   </div>
                   <div className="flex items-center justify-center bg-flare text-white" style={{ width: `${FEE_PERCENT}%` }}>
@@ -232,7 +232,7 @@ export function TipModal({
                   <Row label={`recipient gets`} value={fmt(fee.netLamports)} strong />
                   <Row label={`fee (${FEE_PERCENT}%)`} value={fmt(fee.feeLamports)} flare />
                 </div>
-                <div className="mt-3 flex items-start gap-2 rounded-lg bg-flare/10 p-2.5 text-xs leading-5 text-flare">
+                <div className="mt-3 flex items-start gap-2 rounded-lg border border-orange-200 bg-orange-50/70 p-2.5 text-xs leading-5 text-flare dark:border-orange-400/20 dark:bg-orange-500/10">
                   <Flame size={13} className="mt-0.5 shrink-0" />
                   <span>
                     {token === 'SOL'

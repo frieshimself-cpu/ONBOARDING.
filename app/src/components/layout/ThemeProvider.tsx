@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem('onb-theme') as Theme | null
       if (saved === 'light' || saved === 'dark') return saved
     }
-    return 'dark' // dark mode default
+    return 'light' // light mode default — clean + friendly
   })
 
   useEffect(() => {

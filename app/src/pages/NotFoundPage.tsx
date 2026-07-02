@@ -9,10 +9,10 @@ export function NotFoundPage() {
         <div className="absolute inset-y-0 left-0 w-1.5 bg-flare" aria-hidden />
         <div className="mono-label text-flare">boarding denied</div>
         <div className="display mt-4 text-7xl">
-          4<span className="text-outline-volt">0</span>4
+          4<span className="gradient-text">0</span>4
         </div>
         <p className="mt-4 text-sm text-muted">
-          This gate doesn&apos;t exist. Your page drifted off the chain.
+          This page doesn&apos;t exist. Let&apos;s get you back to the gate.
         </p>
         <div className="relative my-6">
           <div className="pass-perf" />
@@ -20,7 +20,7 @@ export function NotFoundPage() {
           <div className="pass-notch-r" />
         </div>
         <div className="flex items-center justify-between">
-          <Barcode seed="404" className="h-6 w-24 text-text/40" />
+          <Barcode seed="404" className="h-6 w-24 text-muted/35" />
           <Link to="/">
             <Button size="sm">Back home</Button>
           </Link>
