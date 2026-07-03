@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Coins, Landmark, Repeat, Flame } from 'lucide-react'
 import { FEE_PERCENT } from '@/lib/constants'
 
@@ -37,12 +38,14 @@ export function BuybackBurnExplainer() {
         style={{ width: '76%' }}
         preserveAspectRatio="none"
       >
-        <line
+        <motion.line
           x1="0" y1="0" x2="100%" y2="0"
-          stroke="rgb(var(--border))"
+          stroke="rgb(var(--brand) / 0.35)"
           strokeWidth="2"
-          strokeDasharray="6 6"
-          className="animate-dash-flow"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 1.4, ease: 'easeInOut', delay: 0.2 }}
         />
       </svg>
       {steps.map((s, i) => (

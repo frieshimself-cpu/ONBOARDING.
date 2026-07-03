@@ -14,8 +14,11 @@ Inter / JetBrains Mono (self-hosted via Fontsource, never falls back), the
 Solana purple→green gradient as the hero accent, soft pastel blobs and
 shadows, a live-activity hero card, boarding-pass path cards with
 perforations and barcodes, a ticker marquee, and an interactive 98/2
-fee-split calculator. Dark mode included as a toggle. Fully responsive,
-honest copy, `prefers-reduced-motion` respected.
+fee-split calculator. Dark mode included as a toggle. Motion layer:
+staggered blur-reveal headline, parallax hero blobs, scroll-drawn section
+connector, spring-animated numbers, drifting CTA gradient, and soft route
+transitions. Fully responsive, honest copy, `prefers-reduced-motion`
+respected (all perpetual/large animations disabled).
 
 ---
 

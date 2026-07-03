@@ -46,12 +46,17 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
+        'gradient-pan': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         marquee: 'marquee 32s linear infinite',
         blink: 'blink 1.1s step-end infinite',
         'dash-flow': 'dash-flow 1.2s linear infinite',
         float: 'float 7s ease-in-out infinite',
+        'gradient-pan': 'gradient-pan 7s ease infinite',
       },
     },
   },

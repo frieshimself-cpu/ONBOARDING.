@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -14,6 +14,8 @@ import {
   Wallet,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { Reveal } from '@/components/ui/Reveal'
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { SectionTag } from '@/components/ui/SectionTag'
 import { Ticker } from '@/components/ui/Ticker'
 import { Barcode } from '@/components/ui/Barcode'
@@ -25,10 +27,10 @@ import { FEE_PERCENT, INCINERATOR, USER_TYPE_META } from '@/lib/constants'
 import { gradientFromSeed, lamportsToSol, solToLamports } from '@/lib/utils'
 
 const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
+  initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
+  whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
   viewport: { once: true, margin: '-60px' },
-  transition: { duration: 0.55, ease: 'easeOut' },
+  transition: { duration: 0.65, ease: [0.21, 0.47, 0.32, 0.98] },
 } as const
 
 export function LandingPage() {
@@ -59,13 +61,33 @@ export function LandingPage() {
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.08 } },
+} as const
+
+const word = {
+  hidden: { opacity: 0, y: '0.55em', filter: 'blur(8px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.75, ease: [0.21, 0.47, 0.32, 0.98] },
+  },
+} as const
+
 function Hero() {
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 700], [0, 110])
+  const y2 = useTransform(scrollY, [0, 700], [0, -80])
+  const y3 = useTransform(scrollY, [0, 700], [0, 60])
+
   return (
     <section className="relative">
-      {/* soft pastel wash */}
-      <div className="blob -top-40 left-[8%] h-96 w-96 bg-emerald-200/60 dark:bg-emerald-500/10" />
-      <div className="blob -top-24 right-[6%] h-80 w-80 bg-lime-200/50 dark:bg-lime-500/10" />
-      <div className="blob top-40 left-[42%] h-72 w-72 bg-sky-100/60 dark:bg-sky-500/5" />
+      {/* soft pastel wash, parallax on scroll */}
+      <motion.div style={{ y: y1 }} className="blob -top-40 left-[8%] h-96 w-96 bg-emerald-200/60 dark:bg-emerald-500/10" />
+      <motion.div style={{ y: y2 }} className="blob -top-24 right-[6%] h-80 w-80 bg-lime-200/50 dark:bg-lime-500/10" />
+      <motion.div style={{ y: y3 }} className="blob top-40 left-[42%] h-72 w-72 bg-sky-100/60 dark:bg-sky-500/5" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
         <div>
@@ -80,14 +102,27 @@ function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.05 }}
+            variants={stagger}
+            initial="hidden"
+            animate="show"
             className="font-display text-[clamp(2.5rem,6vw,4.2rem)] font-extrabold leading-[1.06] tracking-tight"
           >
-            Get <span className="gradient-text">onboarded</span>,
-            <br />
-            onchain.
+            <span className="block">
+              <motion.span variants={word} className="inline-block">
+                Get&nbsp;
+              </motion.span>
+              <motion.span variants={word} className="gradient-text gradient-animate inline-block">
+                onboarded
+              </motion.span>
+              <motion.span variants={word} className="inline-block">
+                ,
+              </motion.span>
+            </span>
+            <span className="block">
+              <motion.span variants={word} className="inline-block">
+                onchain.
+              </motion.span>
+            </span>
           </motion.h1>
 
           <motion.p
@@ -249,6 +284,7 @@ function PathsSection() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
       <SectionTag n="01" label="Pick your path" />
+      <Reveal>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 className="display max-w-xl text-3xl leading-tight sm:text-[2.6rem]">
           Two sides, one community.
@@ -258,6 +294,7 @@ function PathsSection() {
           seat for you.
         </p>
       </div>
+      </Reveal>
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <BoardingPass
@@ -391,6 +428,7 @@ function HowItWorksSection() {
       <div className="blob left-1/2 top-32 h-80 w-[38rem] -translate-x-1/2 bg-orange-100/60 dark:bg-orange-500/5" />
       <div className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6">
         <SectionTag n="02" label="Tokenomics, kept honest" />
+        <Reveal>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="display max-w-2xl text-3xl leading-tight sm:text-[2.6rem]">
             Every tip makes $ONBOARDING
@@ -401,6 +439,7 @@ function HowItWorksSection() {
             Open, onchain, verifiable — and no, it doesn&apos;t guarantee price.
           </p>
         </div>
+        </Reveal>
 
         <div className="mt-12">
           <BuybackBurnExplainer />
@@ -483,7 +522,7 @@ function FeeCalculator() {
             they receive
           </div>
           <div className="mt-1.5 font-display text-xl font-bold text-emerald-600 dark:text-emerald-300">
-            {lamportsToSol(fee.netLamports).toLocaleString(undefined, { maximumFractionDigits: 4 })}{' '}
+            <AnimatedNumber value={lamportsToSol(fee.netLamports)} decimals={2} />{' '}
             <span className="text-sm">SOL</span>
           </div>
         </div>
@@ -492,7 +531,7 @@ function FeeCalculator() {
             bought &amp; burned
           </div>
           <div className="mt-1.5 font-display text-xl font-bold text-flare">
-            {lamportsToSol(fee.feeLamports).toLocaleString(undefined, { maximumFractionDigits: 4 })}{' '}
+            <AnimatedNumber value={lamportsToSol(fee.feeLamports)} decimals={3} />{' '}
             <span className="text-sm">SOL</span>
           </div>
         </div>
@@ -564,6 +603,7 @@ function GuidesTeaser() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
       <SectionTag n="04" label="Learn the ropes" />
+      <Reveal>
       <div className="flex items-end justify-between gap-4">
         <h2 className="display text-3xl leading-tight sm:text-[2.6rem]">
           Start with the guides.
@@ -575,6 +615,7 @@ function GuidesTeaser() {
           All guides <ArrowUpRight size={15} />
         </Link>
       </div>
+      </Reveal>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-3">
         {guides.map((g, i) => (
@@ -610,10 +651,11 @@ function FinalCta() {
     <section className="mx-auto max-w-6xl px-4 pb-10 pt-4 sm:px-6">
       <motion.div
         {...fadeUp}
-        className="relative overflow-hidden rounded-[2rem] p-10 text-center text-white shadow-lift sm:p-16"
+        className="animate-gradient-pan relative overflow-hidden rounded-[2rem] p-10 text-center text-white shadow-lift sm:p-16"
         style={{
           background:
-            'linear-gradient(120deg, #065f46 0%, #059669 35%, #10b981 70%, #2dd4bf 100%)',
+            'linear-gradient(120deg, #065f46 0%, #059669 30%, #10b981 55%, #2dd4bf 80%, #059669 100%)',
+          backgroundSize: '220% 220%',
         }}
       >
         <div className="blob -left-20 -top-24 h-72 w-72 bg-white/15" />
