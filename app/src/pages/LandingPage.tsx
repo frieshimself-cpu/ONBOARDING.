@@ -63,8 +63,8 @@ function Hero() {
   return (
     <section className="relative">
       {/* soft pastel wash */}
-      <div className="blob -top-40 left-[8%] h-96 w-96 bg-violet-200/50 dark:bg-violet-500/10" />
-      <div className="blob -top-24 right-[6%] h-80 w-80 bg-emerald-200/50 dark:bg-emerald-500/10" />
+      <div className="blob -top-40 left-[8%] h-96 w-96 bg-emerald-200/60 dark:bg-emerald-500/10" />
+      <div className="blob -top-24 right-[6%] h-80 w-80 bg-lime-200/50 dark:bg-lime-500/10" />
       <div className="blob top-40 left-[42%] h-72 w-72 bg-sky-100/60 dark:bg-sky-500/5" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
@@ -270,7 +270,7 @@ function PathsSection() {
         <BoardingPass
           type="developer"
           gate="02"
-          accent="violet"
+          accent="teal"
           icon={Code2}
           perks={['Show your work & skills', 'Get discovered by projects', 'Receive tips in SOL or $ONB']}
         />
@@ -280,19 +280,19 @@ function PathsSection() {
 }
 
 const ACCENTS = {
-  violet: {
-    spine: 'bg-violet-500',
-    text: 'text-violet-600 dark:text-violet-300',
-    chip: 'bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300',
-    dot: 'bg-violet-400',
-    glow: 'brand' as const,
+  teal: {
+    spine: 'bg-teal-500',
+    text: 'text-teal-600 dark:text-teal-300',
+    chip: 'bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-300',
+    dot: 'bg-teal-400',
+    glow: 'brand-2' as const,
   },
   emerald: {
     spine: 'bg-emerald-500',
     text: 'text-emerald-600 dark:text-emerald-300',
     chip: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300',
     dot: 'bg-emerald-400',
-    glow: 'brand-2' as const,
+    glow: 'brand' as const,
   },
 }
 
@@ -509,13 +509,13 @@ function FeaturesSection() {
   const items = [
     {
       icon: Wallet,
-      color: 'bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300',
+      color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
       title: 'Wallet-native',
       body: 'Phantom & Solflare, with a clear preview before you ever approve anything.',
     },
     {
       icon: ShieldCheck,
-      color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
+      color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/15 dark:text-teal-300',
       title: 'Non-custodial',
       body: 'We never hold your keys or funds. Every transaction is yours to approve — or reject.',
     },
@@ -613,7 +613,7 @@ function FinalCta() {
         className="relative overflow-hidden rounded-[2rem] p-10 text-center text-white shadow-lift sm:p-16"
         style={{
           background:
-            'linear-gradient(120deg, #6d28d9 0%, #7c3aed 35%, #0ea5a0 80%, #10b981 100%)',
+            'linear-gradient(120deg, #065f46 0%, #059669 35%, #10b981 70%, #2dd4bf 100%)',
         }}
       >
         <div className="blob -left-20 -top-24 h-72 w-72 bg-white/15" />
@@ -632,7 +632,7 @@ function FinalCta() {
             <Link to="/create">
               <Button
                 size="lg"
-                className="border-0 bg-white text-violet-700 hover:bg-white hover:shadow-[0_12px_40px_-8px_rgb(255_255_255/0.5)]"
+                className="border-0 !bg-white !text-emerald-700 hover:!bg-white hover:shadow-[0_12px_40px_-8px_rgb(255_255_255/0.5)]"
               >
                 Create your profile <ArrowRight size={17} />
               </Button>

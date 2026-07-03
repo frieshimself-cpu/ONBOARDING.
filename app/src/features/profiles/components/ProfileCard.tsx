@@ -15,7 +15,7 @@ export function ProfileCard({ profile, index = 0 }: { profile: Profile; index?: 
       transition={{ duration: 0.4, delay: (index % 3) * 0.05 }}
     >
       <Link to={`/p/${profile.handle}`} className="group block h-full">
-        <SpotlightCard glow={isDev ? 'brand' : 'brand-2'} className="h-full p-5">
+        <SpotlightCard glow={isDev ? 'brand-2' : 'brand'} className="h-full p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
               <Avatar src={profile.avatar_url} name={profile.display_name} size={46} />
@@ -41,7 +41,7 @@ export function ProfileCard({ profile, index = 0 }: { profile: Profile; index?: 
               <span
                 key={s}
                 className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider ${
-                  isDev ? 'bg-brand/10 text-brand' : 'bg-brand-2/10 text-brand-2'
+                  isDev ? 'bg-brand-2/10 text-brand-2' : 'bg-brand/10 text-brand'
                 }`}
               >
                 {s}

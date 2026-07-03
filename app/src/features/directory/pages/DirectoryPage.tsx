@@ -59,11 +59,11 @@ export function DirectoryPage({ userType }: { userType: UserType }) {
       >
         <div className="eyebrow mb-4">
           Directory
-          <span className={isDev ? 'text-brand' : 'text-brand-2'}>{meta.label}s</span>
+          <span className={isDev ? 'text-brand-2' : 'text-brand'}>{meta.label}s</span>
         </div>
         <div className="flex flex-wrap items-end justify-between gap-5">
           <h1 className="font-display text-[clamp(2rem,5vw,3.2rem)] font-extrabold leading-none tracking-tight">
-            {meta.label}s<span className={isDev ? 'text-brand' : 'text-brand-2'}>.</span>
+            {meta.label}s<span className={isDev ? 'text-brand-2' : 'text-brand'}>.</span>
           </h1>
           <Link to={`/create/${userType}`}>
             <Button variant="outline">

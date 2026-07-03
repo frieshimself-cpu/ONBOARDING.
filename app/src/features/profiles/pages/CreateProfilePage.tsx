@@ -12,8 +12,8 @@ import type { ProfileInput } from '@/lib/types'
 
 function TypeChooser() {
   const meta = [
-    { type: 'developer' as UserType, icon: Code2, accent: 'brand' as const, gate: '02' },
-    { type: 'onboardee' as UserType, icon: Sprout, accent: 'brand-2' as const, gate: '01' },
+    { type: 'developer' as UserType, icon: Code2, accent: 'brand-2' as const, gate: '02' },
+    { type: 'onboardee' as UserType, icon: Sprout, accent: 'brand' as const, gate: '01' },
   ]
   return (
     <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6">

@@ -4,7 +4,7 @@ import { FEE_PERCENT } from '@/lib/constants'
 const steps = [
   {
     icon: Coins,
-    color: 'bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300',
+    color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
     title: 'You send a tip',
     body: 'Say thanks with SOL or $ONBOARDING. You approve it in your own wallet — we never touch your keys.',
   },
@@ -16,7 +16,7 @@ const steps = [
   },
   {
     icon: Repeat,
-    color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
+    color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/15 dark:text-teal-300',
     title: 'The fee buys $ONB',
     body: 'An open, onchain process market-buys $ONBOARDING with the collected fees via a Jupiter swap.',
   },

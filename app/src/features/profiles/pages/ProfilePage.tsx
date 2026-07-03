@@ -123,7 +123,7 @@ export function ProfilePage() {
             </h1>
             <span
               className={`rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] ${
-                isDev ? 'bg-brand/10 text-brand' : 'bg-brand-2/10 text-brand-2'
+                isDev ? 'bg-brand-2/10 text-brand-2' : 'bg-brand/10 text-brand'
               }`}
             >
               {USER_TYPE_META[profile.user_type].label}
@@ -140,7 +140,7 @@ export function ProfilePage() {
               <span
                 key={s}
                 className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider ${
-                  isDev ? 'bg-brand/10 text-brand' : 'bg-brand-2/10 text-brand-2'
+                  isDev ? 'bg-brand-2/10 text-brand-2' : 'bg-brand/10 text-brand'
                 }`}
               >
                 {s}

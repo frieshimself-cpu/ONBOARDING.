@@ -41,7 +41,7 @@ export function Navbar() {
           <svg viewBox="0 0 64 64" className="h-7 w-7" aria-hidden>
             <defs>
               <linearGradient id="logo-g" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0" stopColor="#9945FF" />
+                <stop offset="0" stopColor="#0d9488" />
                 <stop offset="1" stopColor="#14F195" />
               </linearGradient>
             </defs>

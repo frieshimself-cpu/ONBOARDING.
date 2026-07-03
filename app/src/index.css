@@ -11,8 +11,8 @@
     --border: 231 234 240;
     --text: 15 23 42;      /* slate-900 */
     --muted: 100 116 139;  /* slate-500 */
-    --brand: 124 58 237;   /* violet-600 */
-    --brand-2: 16 185 129; /* emerald-500 */
+    --brand: 5 150 105;    /* emerald-600 */
+    --brand-2: 13 148 136;  /* teal-600 */
     --flare: 249 115 22;   /* orange-500 */
     --ink: 255 255 255;    /* text on brand */
   }
@@ -24,10 +24,10 @@
     --border: 41 48 66;
     --text: 236 239 244;
     --muted: 143 152 170;
-    --brand: 167 139 250;  /* violet-400 */
-    --brand-2: 52 211 153; /* emerald-400 */
+    --brand: 52 211 153;   /* emerald-400 */
+    --brand-2: 45 212 191;  /* teal-400 */
     --flare: 251 146 60;   /* orange-400 */
-    --ink: 20 12 40;
+    --ink: 4 32 24;
   }
 
   html {
@@ -72,7 +72,7 @@
   }
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(100deg, #9945ff 10%, #6c8bff 50%, #10b981 90%);
+    background-image: linear-gradient(115deg, #047857 0%, #10b981 45%, #14f195 100%);
   }
   .mono-label {
     @apply font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-muted;
