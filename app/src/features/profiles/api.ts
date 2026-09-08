@@ -4,6 +4,16 @@ import type { UserType } from '@/lib/constants'
 import { DEMO_PROFILES } from './demoData'
 
 const LS_KEY = 'onb-demo-profiles'
+const DEMO_USER_KEY = 'onb-demo-user'
+
+function demoUserId(): string | null {
+  try {
+    const raw = localStorage.getItem(DEMO_USER_KEY)
+    return raw ? (JSON.parse(raw) as { id: string }).id : null
+  } catch {
+    return null
+  }
+}
 
 // ---- demo-mode persistence (localStorage) so the full CRUD flow works w/o backend ----
 function readLocal(): Profile[] {
@@ -81,7 +91,7 @@ export async function createProfile(input: ProfileInput): Promise<Profile> {
     return data as Profile
   }
 
-  // demo mode — persist to localStorage
+  // demo mode — persist to localStorage, owned by the demo account
   if (demoPool().some((p) => p.handle === input.handle)) {
     throw new Error(`Handle @${input.handle} is already taken.`)
   }
@@ -89,12 +99,28 @@ export async function createProfile(input: ProfileInput): Promise<Profile> {
   const profile: Profile = {
     ...input,
     id: `local-${input.handle}-${Math.floor(Math.random() * 1e6)}`,
-    user_id: null,
+    user_id: demoUserId(),
     created_at: now,
     updated_at: now,
   }
   writeLocal([profile, ...readLocal()])
   return profile
+}
+
+/** The signed-in user's own profile (or null if they haven't made one). */
+export async function getProfileByUserId(userId: string): Promise<Profile | null> {
+  if (isSupabaseConfigured && supabase) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (error) throw error
+    return (data as Profile) ?? null
+  }
+  return readLocal().find((p) => p.user_id === userId) ?? null
 }
 
 export async function updateProfile(id: string, input: ProfileInput): Promise<Profile> {
@@ -135,11 +161,13 @@ export async function deleteProfile(id: string): Promise<void> {
 /**
  * Can the current visitor edit this profile?
  * - Supabase mode: profile.user_id must match the signed-in user.
- * - Demo mode: only profiles created in this browser (stored locally).
+ * - Demo mode: same rule against the local demo account (with a fallback for
+ *   profiles created in this browser before accounts existed).
  */
 export function canEditProfile(profile: Profile, userId?: string | null): boolean {
   if (isSupabaseConfigured) return !!userId && profile.user_id === userId
-  return readLocal().some((p) => p.id === profile.id)
+  if (userId && profile.user_id === userId) return true
+  return profile.user_id == null && readLocal().some((p) => p.id === profile.id)
 }
 
 /**

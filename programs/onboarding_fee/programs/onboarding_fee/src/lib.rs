@@ -112,8 +112,8 @@ pub mod onboarding_fee {
     /// ⚠️ SCAFFOLD: you must (a) pass the canonical Jupiter aggregator program id,
     /// (b) wrap the vault SOL to WSOL as part of the route, and (c) have this
     /// audited. See README.
-    pub fn swap_fees_for_onboarding(
-        ctx: Context<SwapFees>,
+    pub fn swap_fees_for_onboarding<'info>(
+        ctx: Context<'_, '_, 'info, 'info, SwapFees<'info>>,
         jupiter_ix_data: Vec<u8>,
     ) -> Result<()> {
         require!(!jupiter_ix_data.is_empty(), FeeError::EmptyRoute);

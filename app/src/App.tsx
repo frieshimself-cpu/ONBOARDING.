@@ -7,6 +7,7 @@ import { CreateProfilePage } from '@/features/profiles/pages/CreateProfilePage'
 import { EditProfilePage } from '@/features/profiles/pages/EditProfilePage'
 import { ProfilePage } from '@/features/profiles/pages/ProfilePage'
 import { GuidesPage } from '@/features/guides/GuidesPage'
+import { SignInPage } from '@/features/auth/SignInPage'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/developers" element={<DirectoryPage userType="developer" />} />
         <Route path="/onboardees" element={<DirectoryPage userType="onboardee" />} />
+        <Route path="/signin" element={<SignInPage />} />
         <Route path="/create" element={<CreateProfilePage />} />
         <Route path="/create/:type" element={<CreateProfilePage />} />
         <Route path="/p/:handle" element={<ProfilePage />} />

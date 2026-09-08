@@ -4,6 +4,7 @@ import { Menu, X, Moon, Sun, Flame } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTheme } from './ThemeProvider'
 import { ConnectWalletButton } from '@/features/transactions/ConnectWalletButton'
+import { AccountMenu } from '@/features/auth/AccountMenu'
 
 const links = [
   { to: '/developers', label: 'Developers' },
@@ -94,6 +95,7 @@ export function Navbar() {
           >
             {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
+          <AccountMenu />
           <div className="hidden sm:block">
             <ConnectWalletButton />
           </div>
@@ -132,6 +134,13 @@ export function Navbar() {
             >
               <Flame size={13} /> 2% burn
             </Link>
+            <NavLink
+              to="/signin"
+              onClick={() => setOpen(false)}
+              className="rounded-xl px-4 py-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-text sm:hidden"
+            >
+              Sign in / account
+            </NavLink>
             <div className="mt-1 px-2 pb-1 sm:hidden">
               <ConnectWalletButton />
             </div>

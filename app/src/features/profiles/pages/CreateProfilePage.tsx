@@ -6,6 +6,9 @@ import { ProfileForm } from '../components/ProfileForm'
 import { createProfile } from '../api'
 import { USER_TYPES, USER_TYPE_META, type UserType } from '@/lib/constants'
 import { isSupabaseConfigured } from '@/lib/supabase'
+import { useAuth } from '@/lib/auth/AuthProvider'
+import { AuthGate } from '@/features/auth/AuthGate'
+import { Spinner } from '@/components/ui/Spinner'
 import { Barcode } from '@/components/ui/Barcode'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import type { ProfileInput } from '@/lib/types'
@@ -63,6 +66,7 @@ function TypeChooser() {
 export function CreateProfilePage() {
   const { type } = useParams()
   const navigate = useNavigate()
+  const { user, loading } = useAuth()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -70,6 +74,42 @@ export function CreateProfilePage() {
     return <TypeChooser />
   }
   const userType = type as UserType
+
+  if (loading) {
+    return (
+      <div className="grid place-items-center py-40 text-muted">
+        <Spinner className="h-6 w-6" />
+      </div>
+    )
+  }
+
+  // Profiles are owned. An account (magic link, or instant in demo mode)
+  // is required before creating one — matches the database's RLS policy.
+  if (!user) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mx-auto max-w-3xl px-4 py-16 sm:px-6"
+      >
+        <div className="mb-10 text-center">
+          <Link
+            to="/create"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted hover:text-text"
+          >
+            ← change type
+          </Link>
+          <h1 className="display mt-3 text-3xl sm:text-4xl">
+            New {USER_TYPE_META[userType].label.toLowerCase()} profile
+          </h1>
+          <p className="mx-auto mt-3 max-w-sm text-muted">
+            First, a quick account — so this profile is yours to edit.
+          </p>
+        </div>
+        <AuthGate />
+      </motion.div>
+    )
+  }
 
   async function handleSubmit(input: ProfileInput) {
     setSubmitting(true)
